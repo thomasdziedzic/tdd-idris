@@ -1,0 +1,19 @@
+import ReadNum
+import System
+
+guess : (target : Nat) -> IO ()
+guess target = do
+  Just guessNum <- readNumber | Nothing => do putStrLn "Invalid input"
+                                              guess target
+  case compare guessNum target of
+       LT => do putStrLn "Your guess is too small :("
+                guess target
+       EQ => putStrLn "Your guess is correct!"
+       GT => do putStrLn "Your guess is too big :("
+                guess target
+
+main : IO ()
+main = do
+  randomTime <- time
+  let randomNum = mod randomTime 10
+  guess (cast randomNum)
